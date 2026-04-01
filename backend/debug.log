@@ -1,0 +1,24 @@
+2026-03-22T14:15:42.191Z [LOG] 📡 Server startup starting
+2026-03-22T14:15:42.195Z [LOG] [dotenv@17.3.1] injecting env (2) from backend\.env [2m-- tip: ⚙️  write to custom object with { processEnv: myObject }[0m
+2026-03-22T14:15:42.195Z [LOG] ✅ dotenv config loaded
+2026-03-22T14:15:42.195Z [LOG] About to create express app
+2026-03-22T14:15:42.196Z [LOG] Express app created
+2026-03-22T14:15:42.196Z [LOG] PORT: 5000
+2026-03-22T14:15:42.878Z [LOG] Connected to MongoDB
+2026-03-22T14:15:42.884Z [LOG] Server Running on port 5000
+2026-03-22T14:16:26.288Z [LOG] 📡 Server startup starting
+2026-03-22T14:16:26.291Z [LOG] [dotenv@17.3.1] injecting env (2) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+2026-03-22T14:16:26.291Z [LOG] ✅ dotenv config loaded
+2026-03-22T14:16:26.291Z [LOG] About to create express app
+2026-03-22T14:16:26.292Z [LOG] Express app created
+2026-03-22T14:16:26.292Z [LOG] PORT: 5000
+2026-03-22T14:16:27.042Z [LOG] Connected to MongoDB
+2026-03-22T14:16:27.048Z [LOG] Server Running on port 5000
+2026-03-22T14:16:33.646Z [LOG] 📡 Server startup starting
+2026-03-22T14:16:33.650Z [LOG] [dotenv@17.3.1] injecting env (2) from backend\.env [2m-- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit[0m
+2026-03-22T14:16:33.650Z [LOG] ✅ dotenv config loaded
+2026-03-22T14:16:33.650Z [LOG] About to create express app
+2026-03-22T14:16:33.651Z [LOG] Express app created
+2026-03-22T14:16:33.652Z [LOG] PORT: 5000
+2026-03-22T14:16:34.349Z [LOG] Connected to MongoDB
+2026-03-22T14:16:34.357Z [LOG] Server Running on port 5000
