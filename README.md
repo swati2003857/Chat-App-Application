@@ -9,7 +9,6 @@ A real-time chat application built using the MERN Stack with JWT Authentication 
 - 🔐 User Authentication (Signup/Login)
 - 🔑 JWT Authentication
 - 💬 Real-time Messaging with Socket.io
-- 🟢 Online/Offline User Status
 - 😊 Emoji Support
 - 🔒 Protected Routes
 - 📱 Responsive UI
