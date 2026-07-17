@@ -1,36 +1,59 @@
-import React from 'react'
+import { useSocketContext } from "../../context/SocketContext";
+import useConversation from "../../zustand/useConversation";
 
-const Conversation = () => {
-  return <>
-    <div className='flex gap-2 items-center hover:bg-sky-500 rounded py-2 cursor-pointer'>
-      <div className='avatar online'>
-        <div className='w-12 rounded-full'>
-{/*           
+const Conversation = ({ conversation, emoji, lastIdx }) => {
+  const { onlineUsers } = useSocketContext();
 
-           <img
-      src='https://api.dicebear.com/7.x/thumbs/svg?seed=Swati'
-      alt='user avatar'
-    /> */}
+  const {
+    selectedConversation,
+    setSelectedConversation,
+  } = useConversation();
 
-    <img
-                alt='Tailwind css chat bubble component'
-                src='https://preview.redd.it/why-is-my-facebook-account-displaying-new-blank-profile-v0-h5gnz1ji36o61.png?width=225&format=png&auto=webp&s=e23893f92e6c9b67d99b65df4c5100798cb26583'
-                />
+  const isSelected =
+    selectedConversation?._id === conversation._id;
+
+  const isOnline = onlineUsers.includes(conversation._id);
+
+  return (
+    <>
+      <div
+        onClick={() => setSelectedConversation(conversation)}
+        className={`flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer ${
+          isSelected ? "bg-sky-500" : ""
+        }`}
+      >
+        <div className={`avatar ${isOnline ? "online" : ""}`}>
+          <div className="w-12 rounded-full">
+            <img
+              src={
+                conversation.profilePic ||
+                "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+              }
+              alt="user avatar"
+            />
+          </div>
         </div>
 
-      </div>
+        <div className="flex flex-1 justify-between">
+          <div>
+            <p className="font-bold text-gray-200">
+              {conversation.fullName}
+            </p>
 
-      <div className='flex flex-col flex-1'>
-        <div className='flex gap-3 justify-between'>
-          <p className='font-bold text-gray-200'>Swati</p>
-          <span className='text-xl'>💗</span>
+            <span className="text-sm text-gray-400">
+              @{conversation.username}
+            </span>
+          </div>
+
+          <span>{emoji}</span>
         </div>
-        <p className='text-sm text-gray-400 truncate'>Hey, how are you?</p>
       </div>
-    </div>
 
-    <div className='divider'></div>
-  </>
-}
+      {!lastIdx && (
+        <div className="divider my-0 py-0 h-1"></div>
+      )}
+    </>
+  );
+};
 
 export default Conversation;

@@ -1,24 +1,118 @@
-import React from 'react'
+// import { useAuthContext } from "../../context/AuthContext";
+// import useConversation from "../../zustand/useConversation";
 
-const Message = () => {
-  return (
-    <div className='chat chat-end'>
-        <div className='chat-image avatar'>
-            <div className='w-10 rounded-full'>
-                <img
-                alt='Tailwind css chat bubble component'
-                src='https://preview.redd.it/why-is-my-facebook-account-displaying-new-blank-profile-v0-h5gnz1ji36o61.png?width=225&format=png&auto=webp&s=e23893f92e6c9b67d99b65df4c5100798cb26583'
-                />
+// const Message = ({ message }) => {
+//   const { authUser } = useAuthContext();
+//   const { selectedConversation } = useConversation();
 
-            </div>
+//   const fromMe = message.senderId === authUser._id;
+//   const chatClassName = fromMe ? "chat-end" : "chat-start";
+//   const profilePic = fromMe
+//     ? authUser.profilePic
+//     : selectedConversation?.profilePic;
+//   const bubbleBgColor = fromMe ? "bg-blue-500" : "";
 
-        </div>
+//   return (
+//     <div className={`chat ${chatClassName}`}>
+//       <div className="chat-image avatar">
+//         <div className="w-10 rounded-full">
+//           <img
+//             alt="Tailwind CSS chat bubble component"
+//             src={profilePic}
+//           />
+//         </div>
+//       </div>
 
-        <div className={`chat-bubble text-white bg-blue-500`}>Hii! What is upp?</div>
-        <div className='chat-footer opacity-50 text-x5 flex gap-1 items-center '>12:42</div>
+//       <div className={`chat-bubble text-white ${bubbleBgColor}`}>
+//         {message.message}
+//       </div>
+
+//       <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
+//         {message.createdAt}
+//       </div>
+//     </div>
+//   );
+// };
+
+// // export default Message;
+// import React from "react";
+// import { useAuthContext } from "../../context/AuthContext";
+// import {extractTime} from "../../utils/extractTime";
+
+// const Message = ({ message }) => {
+//   const formattedTime = extractTime(message.createdAt);
+//   const { authUser } = useAuthContext();
+
+//   console.log("authUser:", authUser);
+//   console.log("message:", message);
+
+//   const fromMe = message.senderId === authUser?._id;
+
+//   return (
+//     <div className={`chat ${fromMe ? "chat-end" : "chat-start"}`}>
       
-    </div>
-  )
-}
+//       <div className="chat-image avatar">
+//         <div className="w-10 rounded-full">
+//           <img
+//             src={
+//               fromMe
+//                 ? authUser?.profilePic
+//                 : "https://api.dicebear.com/7.x/thumbs/svg?seed=User"
+//             }
+//             alt="user"
+//           />
+//         </div>
+//       </div>
 
-export default Message
+//       <div className={`chat-bubble ${fromMe ? "bg-blue-500 text-white" : ""}`}>
+//         {message.message}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Message;
+
+import { extractTime } from "../../utils/extractTime";
+import useConversation from "../../zustand/useConversation";
+import { useAuthContext } from "../../context/AuthContext";
+
+const Message = ({ message }) => {
+  const { authUser } = useAuthContext();
+  const { selectedConversation } = useConversation();
+
+  const fromMe = message.senderId === authUser?._id;
+  const formattedTime = extractTime(message.createdAt);
+
+  const chatClass = fromMe ? "chat-end" : "chat-start";
+
+  const bubbleClass = fromMe
+    ? "bg-blue-500 text-white"
+    : "bg-gray-300 text-black";
+
+  const profilePic = fromMe
+    ? authUser?.profilePic
+    : selectedConversation?.profilePic;
+
+    const shakeClass = message.shouldShake ? "shake" : ""
+
+  return (
+    <div className={`chat ${chatClass}`}>
+      <div className="chat-image avatar">
+        <div className="w-10 rounded-full">
+          <img src={profilePic} alt="user" />
+        </div>
+      </div>
+
+      <div className={`chat-bubble text-white ${bubbleClass} ${shakeClass} pb-2`}>
+        {message.message}
+      </div>
+
+      <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
+        {formattedTime}
+      </div>
+    </div>
+  );
+};
+
+export default Message;

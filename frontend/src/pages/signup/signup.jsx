@@ -1,149 +1,127 @@
+
 import { useState } from "react";
-import GenderCheckbox from "../GenderCheckbox";
+import GenderCheckbox from "../GenderCheckbox.jsx";
+import { Link } from "react-router-dom";
+import useSignup from "../../hooks/useSignup";
 
 const Signup = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [inputs, setInputs] = useState({
+        fullName: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+        gender: ""
+    });
 
-    const passwordMatch = confirmPassword.length > 0 && password === confirmPassword;
-    const passwordNotMatch = confirmPassword.length > 0 && password !== confirmPassword;
+    const { loading, signup } = useSignup();
+
+    // Handle input change
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setInputs((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    // Handle gender
+    const handleGenderChange = (gender) => {
+        setInputs((prev) => ({
+            ...prev,
+            gender
+        }));
+    };
+
+    // Submit form
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await signup(inputs);
+    };
+
+    const passwordMatch =
+        inputs.confirmPassword &&
+        inputs.password === inputs.confirmPassword;
+
+    const passwordNotMatch =
+        inputs.confirmPassword &&
+        inputs.password !== inputs.confirmPassword;
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen mx-auto">
-            <div className="w-full max-w-md p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10">
+            <div className="w-full max-w-md p-6 rounded-lg shadow-md bg-gray-400 bg-opacity-10 backdrop-blur">
 
                 <h1 className="text-3xl font-semibold text-center text-gray-300">
-                    Signup
-                    <span className="text-blue-500"> ChatApp</span>
+                    Signup <span className="text-blue-500">ChatApp</span>
                 </h1>
 
-                <form>
-                    {/* Full Name */}
-                    <div className="mt-4">
-                        <label className="label p-2">
-                            <span className="text-base label-text text-white">Full Name</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Enter Full Name"
-                            className="w-full h-10 px-3 rounded-lg bg-white/20
-                                       text-white placeholder-white/60 border border-white/30
-                                       focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
 
-                    {/* Username */}
-                    <div className="mt-4">
-                        <label className="label p-2">
-                            <span className="text-base label-text text-white">Username</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Enter Username"
-                            className="w-full h-10 px-3 rounded-lg bg-white/20
-                                       text-white placeholder-white/60 border border-white/30
-                                       focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
+                    <input
+                        type="text"
+                        name="fullName"
+                        placeholder="Full Name"
+                        value={inputs.fullName}
+                        onChange={handleChange}
+                        className="w-full p-2 rounded-lg"
+                    />
 
-                    {/* Password */}
-                    <div className="mt-4">
-                        <label className="label">
-                            <span className="text-base label-text text-white">Password</span>
-                        </label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Enter Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full h-10 px-3 rounded-lg bg-white/20
-                                           text-white placeholder-white/60 border border-white/30
-                                           focus:outline-none focus:ring-2 focus:ring-blue-400 pr-16"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2
-                                           text-white/70 hover:text-white text-sm"
-                            >
-                                {showPassword ? "🙈 Hide" : "👁 Show"}
-                            </button>
-                        </div>
-                    </div>
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        value={inputs.username}
+                        onChange={handleChange}
+                        className="w-full p-2 rounded-lg"
+                    />
 
-                    {/* Confirm Password */}
-                    <div className="mt-4">
-                        <label className="label">
-                            <span className="text-base label-text text-white">Confirm Password</span>
-                        </label>
-                        <div className="relative">
-                            <input
-                                type={showConfirmPassword ? "text" : "password"}
-                                placeholder="Re-enter Password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className={`w-full h-10 px-3 rounded-lg bg-white/20
-                                           text-white placeholder-white/60 border 
-                                           focus:outline-none focus:ring-2 pr-16
-                                           ${passwordNotMatch
-                                               ? "border-red-400 focus:ring-red-400"
-                                               : passwordMatch
-                                               ? "border-green-400 focus:ring-green-400"
-                                               : "border-white/30 focus:ring-blue-400"
-                                           }`}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2
-                                           text-white/70 hover:text-white text-sm"
-                            >
-                                {showConfirmPassword ? "🙈 Hide" : "👁 Show"}
-                            </button>
-                        </div>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={inputs.password}
+                        onChange={handleChange}
+                        className="w-full p-2 rounded-lg"
+                    />
 
-                        {/* Match / Not Match Message */}
-                        {passwordNotMatch && (
-                            <p className="text-red-400 text-xs mt-1 ml-1">
-                                ❌ Passwords do not match
-                            </p>
-                        )}
-                        {passwordMatch && (
-                            <p className="text-green-400 text-xs mt-1 ml-1">
-                                ✅ Passwords match!
-                            </p>
-                        )}
-                    </div>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={inputs.confirmPassword}
+                        onChange={handleChange}
+                        className={`w-full p-2 rounded-lg
+                            ${passwordNotMatch ? "border border-red-400" : ""}
+                            ${passwordMatch ? "border border-green-400" : ""}
+                        `}
+                    />
 
-                    {/* Gender Checkbox */}
-                    <GenderCheckbox />
+                    {passwordNotMatch && (
+                        <p className="text-red-500 text-sm">
+                            Passwords do not match
+                        </p>
+                    )}
 
-                    {/* Signup Button */}
+                    <GenderCheckbox onCheckboxChange={handleGenderChange} />
+
                     <button
                         type="submit"
-                        disabled={passwordNotMatch || password.length === 0}
-                        className="w-full py-2 mt-6 rounded-lg bg-blue-500 hover:bg-blue-600
-                                   text-white font-semibold transition duration-300
-                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={loading || passwordNotMatch}
+                        className="w-full py-2 bg-blue-500 text-white rounded-lg"
                     >
-                        Sign Up
+                        {loading ? "Loading..." : "Sign Up"}
                     </button>
 
-                    {/* Already have an account? */}
-                    <p className="text-center text-white/70 text-sm mt-4">
+                    <p className="text-center text-sm">
                         Already have an account?{" "}
-                        <a href="/login" className="text-blue-400 hover:underline font-medium">
+                        <Link to="/login" className="text-blue-500">
                             Login
-                        </a>
+                        </Link>
                     </p>
 
                 </form>
             </div>
         </div>
     );
-}
+};
 
 export default Signup;

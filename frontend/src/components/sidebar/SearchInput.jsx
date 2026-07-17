@@ -1,20 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { IoSearchSharp } from "react-icons/io5";
+import useConversation from '../../zustand/useConversation';
+import useGetConversations from "../../hooks/useGetConversations";
+import toast from "react-hot-toast";
 
 const SearchInput = () => {
+  const [search, setSearch] = useState("");
+
+  const { setSelectedConversation } = useConversation();
+
+  // ✅ FIXED: correct variable name
+  const { conversations } = useGetConversations();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!search) return;
+
+    if (search.length < 3) {
+      return toast.error('Search term must be at least 3 characters long');
+    }
+
+    // ✅ FIXED: search inside conversations array
+    const foundConversation = conversations.find((c) =>
+      c.fullName.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (foundConversation) {
+      setSelectedConversation(foundConversation);
+      setSearch("");
+    } else {
+      toast.error("No such user found!");
+    }
+  };
+
   return (
-    <div className='flex items-center gap-2'>
+    <form onSubmit={handleSubmit} className='flex items-center gap-2'>
       <input
         type="text"
         placeholder='Search'
         className='input input-bordered rounded-full'
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
-      <button className='btn btn-circle bg-sky-500 text-white'>
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-        </svg>
+      <button type='submit' className='btn btn-circle bg-sky-500 text-white'>
+        <IoSearchSharp className='w-6 h-6 outline-none' />
       </button>
-    </div>
-  )
-}
+    </form>
+  );
+};
 
 export default SearchInput;
